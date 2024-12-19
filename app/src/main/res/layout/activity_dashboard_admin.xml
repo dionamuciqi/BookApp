@@ -49,6 +49,14 @@
 
         </ImageButton>
     </RelativeLayout>
+
+     <android.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/toolbarRl"
+        android:layoutMnager="androidx.recyclerview.widget.LinearLayoutManager"
+        android:layout_above="@id/bottomLl"/>
+    
     <LinearLayout
         android:id="@+id/bottomLl"
         android:layout_width="match_parent"
