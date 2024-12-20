@@ -26,6 +26,7 @@ android {
             )
         }
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
@@ -33,7 +34,7 @@ android {
     // enable view binding (optinal, you may use findvoewbyId)
 
     buildFeatures{
-        viewBinding = true;
+        viewBinding = true
     }
 }
 

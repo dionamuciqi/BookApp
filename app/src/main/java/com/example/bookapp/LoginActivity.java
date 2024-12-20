@@ -1,152 +1,56 @@
 package com.example.bookapp;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
-import android.util.Patterns;
 import android.view.View;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.example.bookapp.databinding.ActivityLoginBinding;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.Firebase;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 public class LoginActivity extends AppCompatActivity {
-
-    //view bidnign
-    private ActivityLoginBinding binding;
-
-    //firebase auth
-    private FirebaseAuth firebaseAuth;
-
-    //progress dialog
-    private ProgressDialog progressDialog;
+    ActivityLoginBinding binding;
+    DatabaseHelper databaseHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        binding = ActivityLoginBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        //init firebase auth
-        firebaseAuth = FirebaseAuth.getInstance();
+        databaseHelper = new DatabaseHelper(this);
 
-
-        //setup progress dialog
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setTitle("Please wait!");
-        progressDialog.setCanceledOnTouchOutside(false);
-
-        //handle click, go to register screen
-        binding.noAccountTv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
-            }
-        });
-
-        //handle click, begin login
+        // Handle Login Button Click
         binding.loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                valideData();
+                String email = binding.loginEmail.getText().toString();
+                String password = binding.loginPassword.getText().toString();
+
+                if (email.equals("") || password.equals("")) {
+                    Toast.makeText(LoginActivity.this, "All fields are mandatory", Toast.LENGTH_SHORT).show();
+                } else {
+                    Boolean checkCredentials = databaseHelper.checkEmailPassword(email, password);
+
+                    if (checkCredentials) {
+                        Toast.makeText(LoginActivity.this, "Login Successfully", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                        startActivity(intent);
+                    } else {
+                        Toast.makeText(LoginActivity.this, "Invalid Credentials", Toast.LENGTH_SHORT).show();
+                    }
+                }
             }
         });
-    }
 
-    private String email = "", password = "";
-    private void valideData() {
-
-        //get data
-        email = binding.emailEt.getText().toString().trim();
-        password = binding.passwordEt.getText().toString().trim();
-
-        //validate data
-        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            //email is either not entered or email pattern is invalid, don't allow to continue in that case
-            Toast.makeText(this, "Invalid email pattern...!", Toast.LENGTH_SHORT).show();
-        } else if (TextUtils.isEmpty(password)) {
-            //password edit text is empty, must enter password
-            Toast.makeText(this,"Enter password...!", Toast.LENGTH_SHORT).show();
-        } else {
-            //data is validated, begin login
-            loginUser();
-        }
-    }
-
-    private void loginUser() {
-        //show messagge
-        progressDialog.setMessage("Logging in...");
-        progressDialog.show();
-
-        //login user
-        firebaseAuth.signInWithEmailAndPassword(email, password)
-                .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
-                    @Override
-                    public void onSuccess(AuthResult authResult) {
-
-                        //login success, check if user is user or admin
-                        checkUser();
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure( Exception e) {
-
-                        //login failed
-                        progressDialog.dismiss();
-                        Toast.makeText(LoginActivity.this,""+e.getMessage(),Toast.LENGTH_SHORT).show();
-                    }
-                });
-    }
-
-    private void checkUser() {
-        progressDialog.setMessage("Checking User...");
-        //check if user is user or admin drom realtime database
-        //get current user
-        FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
-
-        //check in db
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users");
-        ref.child(firebaseUser.getUid())
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot snapshot) {
-                        progressDialog.dismiss();
-                        //get user type
-                        String userType = ""+snapshot.child("userType").getValue();
-                        //check user type
-                        if(userType.equals("user")){
-                            //this is simple user, open user dashboard
-                            startActivity(new Intent(LoginActivity.this, DashboardUserActivity.class));
-                            finish();
-                        } else if (userType.equals("admin")) {
-                            //this is admin, open user dashboard
-                            startActivity(new Intent(LoginActivity.this, DashboardUserActivity.class));
-                            finish();
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError error) {
-
-                    }
-                });
+        // Redirect to Sign Up activity
+        binding.noAccountTv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(LoginActivity.this, SignupActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 }

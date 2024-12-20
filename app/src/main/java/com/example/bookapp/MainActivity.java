@@ -4,44 +4,39 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.example.bookapp.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
 
-    //view binding
-
-    private ActivityMainBinding bindig;
+    // View binding
+    private ActivityMainBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        bindig = ActivityMainBinding.inflate(getLayoutInflater());
-        setContentView(bindig.getRoot());
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
-
-        //handle loginBtn click , start ligin screen
-
-        bindig.loginBtn.setOnClickListener(new View.OnClickListener() {
+        // Handle Login Button click, start Login screen
+        binding.loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                // Start LoginActivity when loginBtn is clicked
+                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                startActivity(intent);
             }
         });
 
-        //handle skiptBtn click start continue without loign screen
-
-        bindig.skipBtn.setOnClickListener(new View.OnClickListener() {
+        // Handle Skip Button click, start a screen without login (like Home screen)
+        binding.skipBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, DashboardUserActivity.class));
+                // Navigate to the Home screen or Dashboard
+                Intent intent = new Intent(MainActivity.this, HomeActivity.class); // Replace HomeActivity with your main screen if needed
+                startActivity(intent);
             }
         });
-
     }
 }

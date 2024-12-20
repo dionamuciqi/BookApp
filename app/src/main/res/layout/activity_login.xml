@@ -6,8 +6,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".LoginActivity">
+
+    <!-- Toolbar Section -->
     <RelativeLayout
-        android:id ="@+id/toolbarRl"
+        android:id="@+id/toolbarRl"
         android:layout_width="match_parent"
         android:layout_height="250dp"
         android:background="@drawable/shape_toolbar01"
@@ -19,10 +21,10 @@
             android:layout_height="110dp"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="48dp"
-            android:src="@drawable/logo">
-        </ImageView>
+            android:src="@drawable/logo" />
 
         <TextView
+            android:id="@+id/toolbarText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/iconIv"
@@ -31,26 +33,25 @@
             android:text="Please Login"
             android:textColor="@color/white"
             android:fontFamily="sans-serif-condensed"
-            android:textSize="20sp">
-        </TextView>
-
-
+            android:textSize="20sp" />
     </RelativeLayout>
 
+    <!-- Form Section -->
     <ScrollView
+        android:id="@+id/formScroll"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginStart="30dp"
-        android:layout_above="@id/noAccountTv"
         android:layout_marginEnd="30dp"
-        android:layout_marginTop="225dp">
+        android:layout_marginTop="225dp"
+        android:layout_above="@id/noAccountTv">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             tools:ignore="MissingConstraints">
 
-            <!--Email-->
+            <!-- Email Input -->
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/emailTil"
                 android:layout_width="match_parent"
@@ -58,9 +59,9 @@
                 app:hintEnabled="false">
 
                 <EditText
-                    android:id="@+id/emailEt"
+                    android:id="@+id/loginEmail"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="56dp"
                     android:background="@drawable/shape_edittext01"
                     android:drawableStart="@drawable/ic_email_gray"
                     android:drawablePadding="10dp"
@@ -68,12 +69,10 @@
                     android:inputType="textEmailAddress"
                     android:padding="10dp"
                     android:textColor="@color/black"
-                    android:textColorHint="@color/gray01">
-
-                </EditText>
+                    android:textColorHint="@color/gray01" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <!--Password-->
+            <!-- Password Input -->
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/passwordTil"
                 android:layout_width="match_parent"
@@ -84,9 +83,9 @@
                 app:hintEnabled="false">
 
                 <EditText
-                    android:id="@+id/passwordEt"
+                    android:id="@+id/loginPassword"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="56dp"
                     android:background="@drawable/shape_edittext01"
                     android:drawableStart="@drawable/ic_email_gray"
                     android:drawablePadding="10dp"
@@ -94,12 +93,10 @@
                     android:inputType="textPassword"
                     android:padding="10dp"
                     android:textColor="@color/black"
-                    android:textColorHint="@color/gray01">
-
-                </EditText>
+                    android:textColorHint="@color/gray01" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <!--Forgot password-->
+            <!-- Forgot Password -->
             <TextView
                 android:id="@+id/forgotTv"
                 android:layout_width="wrap_content"
@@ -109,11 +106,9 @@
                 android:layout_marginTop="5dp"
                 android:padding="5dp"
                 android:text="Forgot Password"
-                android:textColor="@color/gray02">
+                android:textColor="@color/gray02" />
 
-            </TextView>
-
-            <!--Login Button-->
+            <!-- Login Button -->
             <Button
                 android:id="@+id/loginBtn"
                 android:layout_width="match_parent"
@@ -122,15 +117,11 @@
                 android:layout_marginTop="20dp"
                 android:background="@drawable/shape_button01"
                 android:text="Login"
-                android:textColor="@color/white">
-
-            </Button>
-
+                android:textColor="@color/white" />
         </RelativeLayout>
-
     </ScrollView>
 
-    <!--No Account, Register-->
+    <!-- No Account? Sign Up -->
     <TextView
         android:id="@+id/noAccountTv"
         android:layout_width="wrap_content"
@@ -139,12 +130,6 @@
         android:layout_centerHorizontal="true"
         android:padding="10dp"
         android:text="@string/new_user_signup"
-        android:textColor="@color/black">
-
-    </TextView>
-
-
-
-
+        android:textColor="@color/black" />
 
 </RelativeLayout>
