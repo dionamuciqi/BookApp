@@ -10,8 +10,7 @@
         android:id="@+id/toolbarRl"
         android:layout_width="match_parent"
         android:layout_height="250dp"
-        android:background="@drawable/shape_toolbar01"
-        tools:ignore="MissingConstraints">
+        android:background="@drawable/shape_toolbar01">
 
         <ImageButton
             android:id="@+id/backBtn"
@@ -52,113 +51,69 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            tools:ignore="MissingConstraints">
+            android:layout_height="wrap_content">
 
-            <!--Name-->
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/nameTil"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:hintEnabled="false">
-
-                <EditText
-                    android:id="@+id/nameEt"
-                    android:layout_width="match_parent"
-                    android:layout_height="48dp"
-                    android:background="@drawable/shape_edittext01"
-                    android:drawableStart="@drawable/ic_email_gray"
-                    android:drawablePadding="10dp"
-                    android:hint="Name"
-                    android:inputType="textPersonName|textCapWords"
-                    android:padding="10dp"
-                    android:textColor="@color/black"
-                    android:textColorHint="@color/gray01" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <!--Email-->
+            <!-- Email -->
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/emailTil"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/nameTil"
-                android:layout_marginTop="5dp"
-                app:hintEnabled="false">
+                app:hintEnabled="true"
+                android:hint="Email">
 
                 <EditText
                     android:id="@+id/signupEmail"
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
-                    android:background="@drawable/shape_edittext01"
-                    android:drawableStart="@drawable/ic_email_gray"
-                    android:drawablePadding="10dp"
-                    android:hint="Email"
-                    android:inputType="textEmailAddress"
-                    android:padding="10dp"
-                    android:textColor="@color/black"
-                    android:textColorHint="@color/gray01" />
+                    android:inputType="textEmailAddress" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <!--Password-->
+            <!-- Password -->
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/passwordTil"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/emailTil"
-                android:layout_marginTop="5dp"
-                app:passwordToggleEnabled="true"
-                app:hintEnabled="false">
+                android:layout_marginTop="10dp"
+                app:passwordToggleEnabled="true">
 
                 <EditText
                     android:id="@+id/signupPassword"
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
-                    android:background="@drawable/shape_edittext01"
-                    android:drawableStart="@drawable/ic_email_gray"
-                    android:drawablePadding="10dp"
-                    android:hint="Password"
                     android:inputType="textPassword"
-                    android:padding="10dp"
-                    android:textColor="@color/black"
-                    android:textColorHint="@color/gray01" />
+                    android:hint="Password" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <!--Confirm Password-->
+            <!-- Confirm Password -->
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/cPasswordTil"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/passwordTil"
-                android:layout_marginTop="5dp"
-                app:passwordToggleEnabled="true"
-                app:hintEnabled="false">
+                android:layout_marginTop="10dp"
+                app:passwordToggleEnabled="true">
 
                 <EditText
                     android:id="@+id/signupConfirm"
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
-                    android:background="@drawable/shape_edittext01"
-                    android:drawableStart="@drawable/ic_email_gray"
-                    android:drawablePadding="10dp"
-                    android:hint="Confirm Password"
                     android:inputType="textPassword"
-                    android:padding="10dp"
-                    android:textColor="@color/black"
-                    android:textColorHint="@color/gray01" />
+                    android:hint="Confirm Password" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <!--Signup Button-->
+            <!-- Signup Button -->
             <Button
                 android:id="@+id/signupButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/cPasswordTil"
                 android:layout_marginTop="20dp"
-                android:background="@drawable/shape_button01"
                 android:text="Signup"
+                android:background="@color/primary"
                 android:textColor="@color/white" />
 
-            <!--Login Redirect Text-->
+            <!-- Redirect to Login -->
             <TextView
                 android:id="@+id/loginRedirectText"
                 android:layout_width="wrap_content"
@@ -168,8 +123,7 @@
                 android:layout_centerHorizontal="true"
                 android:text="Already have an account? Login here"
                 android:textColor="@color/primary"
-                android:textSize="16sp"
-                android:gravity="center" />
+                android:textSize="16sp" />
         </RelativeLayout>
     </ScrollView>
 </RelativeLayout>

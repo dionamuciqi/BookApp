@@ -2,6 +2,7 @@ package com.example.bookapp;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Toast;
 
@@ -25,31 +26,33 @@ public class SignupActivity extends AppCompatActivity {
         binding.signupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String email = binding.signupEmail.getText().toString();
+                String email = binding.signupEmail.getText().toString().trim();
                 String password = binding.signupPassword.getText().toString();
                 String confirmPassword = binding.signupConfirm.getText().toString();
 
-                if (email.equals("") || password.equals("") || confirmPassword.equals("")) {
+                if (email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
                     Toast.makeText(SignupActivity.this, "All fields are mandatory", Toast.LENGTH_SHORT).show();
+                } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                    Toast.makeText(SignupActivity.this, "Enter a valid email address", Toast.LENGTH_SHORT).show();
+                } else if (!isValidPassword(password)) {
+                    Toast.makeText(SignupActivity.this, "Password must be 6-20 characters, include 1 digit, 1 uppercase, 1 lowercase, and 1 special character", Toast.LENGTH_LONG).show();
+                } else if (!password.equals(confirmPassword)) {
+                    Toast.makeText(SignupActivity.this, "Passwords do not match", Toast.LENGTH_SHORT).show();
                 } else {
-                    if (password.equals(confirmPassword)) {
-                        Boolean checkUserEmail = databaseHelper.checkEmail(email);
+                    Boolean checkUserEmail = databaseHelper.checkEmail(email);
 
-                        if (checkUserEmail == false) {
-                            Boolean insert = databaseHelper.insertData(email, password);
+                    if (!checkUserEmail) {
+                        Boolean insert = databaseHelper.insertData(email, password);
 
-                            if (insert == true) {
-                                Toast.makeText(SignupActivity.this, "Signup Successful", Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-                                startActivity(intent);
-                            } else {
-                                Toast.makeText(SignupActivity.this, "Signup Failed", Toast.LENGTH_SHORT).show();
-                            }
+                        if (insert) {
+                            Toast.makeText(SignupActivity.this, "Signup Successful", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                            startActivity(intent);
                         } else {
-                            Toast.makeText(SignupActivity.this, "User already exists, Please login", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SignupActivity.this, "Signup Failed", Toast.LENGTH_SHORT).show();
                         }
                     } else {
-                        Toast.makeText(SignupActivity.this, "Passwords do not match", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SignupActivity.this, "User already exists, Please login", Toast.LENGTH_SHORT).show();
                     }
                 }
             }
@@ -62,5 +65,13 @@ public class SignupActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        binding.backBtn.setOnClickListener(v -> onBackPressed());
+    }
+
+    private boolean isValidPassword(String password) {
+        // Password regex: 6-20 chars, 1 digit, 1 special char, 1 uppercase, 1 lowercase
+        String passwordPattern = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=!])(?=\\S+$).{6,20}$";
+        return password.matches(passwordPattern);
     }
 }
