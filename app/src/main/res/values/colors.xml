@@ -12,10 +12,11 @@
     <color name="gray02">#777777</color>
     <color name="gray83">#EDEDED</color>
     <color name="primary">#FF6200EE</color>
-
-
-
-
-
+    <color name="lightgray">#D3D3D3</color>
+    <color name="lightpink">#E3A7DB</color>
+    <color name="blue">#485AC3</color>
+    <color name="brown">#A07032</color>
+    <color name="lightgreen">#8CEF90</color>
+    <color name="lightblue">#07E6CE</color>
 
 </resources>
