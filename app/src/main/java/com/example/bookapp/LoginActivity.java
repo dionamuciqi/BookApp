@@ -14,6 +14,8 @@ public class LoginActivity extends AppCompatActivity {
     ActivityLoginBinding binding;
     DatabaseHelper databaseHelper;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
