@@ -48,6 +48,12 @@ dependencies {
     implementation(libs.firebase.auth)
     implementation(libs.firebase.database)
     implementation(libs.firebase.storage)
+    implementation("com.android.support:cardview-v7:28.0.0")
+    implementation("some.library:version") {
+        exclude(group = "conflicting.group", module = "conflicting.module")
+    }
+    implementation("androidx.appcompat:appcompat:1.6.1")
+    implementation("com.google.android.material:material:1.9.0")
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
