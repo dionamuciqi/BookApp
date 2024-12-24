@@ -15,6 +15,7 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        vectorDrawables.useSupportLibrary = true
     }
 
     buildTypes {
@@ -38,19 +39,17 @@ android {
 }
 
 dependencies {
-    implementation(libs.appcompat)
-    implementation(libs.material)
-    implementation(libs.activity)
-    implementation(libs.constraintlayout)
-    implementation(libs.firebase.analytics)
-    implementation(libs.firebase.auth)
-    implementation(libs.firebase.database)
-    implementation(libs.firebase.storage)
+    implementation(libs.appcompat) // AppCompat library for backward compatibility with older Android versions
+    implementation(libs.material) // Material Components for UI elements like buttons, cards, etc.
+    implementation(libs.activity) // Android Activity library for handling activities
+    implementation(libs.constraintlayout) // ConstraintLayout for flexible and efficient layouts
+    implementation(libs.firebase.analytics) // Firebase Analytics for tracking app usage
+    implementation(libs.firebase.auth) // Firebase Authentication for user sign-in functionality
+    implementation(libs.firebase.database) // Firebase Realtime Database for storing and syncing app data
+    implementation(libs.firebase.storage) // Firebase Storage for file uploads and downloads
 
-    implementation("androidx.appcompat:appcompat:1.6.1")
-    implementation("com.google.android.material:material:1.9.0")
-
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.ext.junit)
-    androidTestImplementation(libs.espresso.core)
+    testImplementation(libs.junit) // JUnit for unit testing
+    androidTestImplementation(libs.ext.junit) // Android-specific JUnit tests
+    androidTestImplementation(libs.espresso.core) // Espresso for UI testing
 }
+

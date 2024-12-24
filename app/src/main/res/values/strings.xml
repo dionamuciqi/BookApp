@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">Book App</string>
     <string name="new_user_signup">New User? <b>SignUp</b> </string> <!--make SignUp bold-->
+    <string name="add_new_item">Add New Item</string>
+    <string name="add_book_label">Add Book</string>
+    <string name="book_library_label">Book Library</string>
+
 </resources>
