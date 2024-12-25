@@ -7,7 +7,6 @@ public class PasswordHasher {
     // Define the salt value
     private static final String SALT = "SUDO";
 
-    // Function to generate the hash code
     public static String generateHash(String input) {
         try {
             // Create a MessageDigest instance for MD5 hashing
@@ -22,7 +21,7 @@ public class PasswordHasher {
             // Convert the byte array to a hexadecimal string
             StringBuilder hashString = new StringBuilder();
             for (byte b : hashBytes) {
-                hashString.append(String.format("%02x", b)); // Convert to hex
+                hashString.append(String.format("%02x", b));
             }
 
             return hashString.toString();
@@ -33,7 +32,6 @@ public class PasswordHasher {
     }
 
     public static void main(String[] args) {
-        // Example usage
         String input = "myPassword";
         String hashedPassword = generateHash(input);
         System.out.println("Hashed Password: " + hashedPassword);

@@ -29,10 +29,10 @@ public class CodeVerificationPage extends AppCompatActivity {
         setContentView(R.layout.activity_code_verification_page);
 
         // Initialize views
-        editTextCode = findViewById(R.id.editTextCode);  // Ensure this ID matches with XML
-        btnVerify = findViewById(R.id.btnVerify);  // Ensure this ID matches with XML
-        btnResendCode = findViewById(R.id.btnResendCode);  // Ensure this ID matches with XML
-        btnGoToLogIn = findViewById(R.id.btnGoToLogIn);  // Ensure this ID matches with XML
+        editTextCode = findViewById(R.id.editTextCode);
+        btnVerify = findViewById(R.id.btnVerify);
+        btnResendCode = findViewById(R.id.btnResendCode);
+        btnGoToLogIn = findViewById(R.id.btnGoToLogIn);
 
         // Verify Button Click Listener
         btnVerify.setOnClickListener(v -> {
@@ -56,7 +56,7 @@ public class CodeVerificationPage extends AppCompatActivity {
         // Resend Code Button Click Listener
         btnResendCode.setOnClickListener(v -> {
             String code = generateCode();
-            UserSession.storeGeneratedCode(code);  // Store the generated code temporarily
+            UserSession.storeGeneratedCode(code);
 
             // Send the code to the user's email
             sendVerificationCode(UserSession.getEmail(), code, "Your 2FA code", "If you didn't try to log in, just ignore this email! \n Your 2FA code: ");
@@ -71,17 +71,17 @@ public class CodeVerificationPage extends AppCompatActivity {
         });
     }
 
-    // Dummy method to generate a code (replace with your actual code generation logic)
+
     private String generateCode() {
-        return String.valueOf((int) (Math.random() * 9000) + 1000);  // Random 4-digit code
+        return String.valueOf((int) (Math.random() * 9000) + 1000);
     }
 
     // Method to send the verification code to the user's email
     private void sendVerificationCode(String toEmail, String verificationCode, String subject, String messageText) {
         String host = "smtp.gmail.com";
         String port = "465";
-        String fromEmail = "your-email@gmail.com";  // Replace with your email
-        String password = "your-email-password";  // Replace with your email password or use app-specific password
+        String fromEmail = "your-email@gmail.com";
+        String password = "your-email-password";
 
         Properties properties = new Properties();
         properties.put("mail.smtp.host", host);

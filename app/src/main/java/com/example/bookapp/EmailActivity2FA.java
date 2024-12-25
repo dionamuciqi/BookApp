@@ -16,15 +16,7 @@ public class EmailActivity2FA {
 
     private static final ExecutorService executorService = Executors.newSingleThreadExecutor();
 
-    /**
-     * This method sends a verification code to the recipient's email address.
-     * It is executed asynchronously to prevent blocking the main thread.
-     *
-     * @param recipientEmail The email address to send the code to
-     * @param code          The generated verification code
-     * @param subject       The subject of the email
-     * @param text          The body text of the email
-     */
+
     public static void sendVerificationCode(String recipientEmail, String code, String subject, String text) {
         // Submit the email sending task to a background thread
         executorService.submit(() -> {

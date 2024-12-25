@@ -27,16 +27,15 @@ public class SplashActivity extends AppCompatActivity {
             return insets;
         });
 
-        // Load the logo ImageView
+
         ImageView logo = findViewById(R.id.logo);
 
-        // Load the animation
         Animation logoAnim = AnimationUtils.loadAnimation(this, R.anim.logo_animation);
 
-        // Start the animation
+
         logo.startAnimation(logoAnim);
 
-        // Start main screen after 2 seconds
+
         new Handler().postDelayed(() -> {
             startActivity(new Intent(SplashActivity.this, MainActivity.class));
             finish();

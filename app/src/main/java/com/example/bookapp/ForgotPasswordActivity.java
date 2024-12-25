@@ -55,7 +55,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
             recoverPassword(email, newPassword);
         }
     }
-    // qekjo mdoket duhet me ju shtu ni pjese qetu nelt qe me funksionu
+
     private boolean isValidPassword(String password) {
         // Password regex: 6-20 chars, 1 digit, 1 special char, 1 uppercase, 1 lowercase
         String passwordPattern = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=!])(?=\\S+$).{6,20}$";

@@ -55,12 +55,12 @@ public class LoginActivity extends AppCompatActivity {
                         // Store the code and email in UserSession
                         UserSession.storeGeneratedCode(verificationCode);
                         UserSession.setEmail(email);
-                        UserSession.setCodeValidity(true);  // Set code as valid
+                        UserSession.setCodeValidity(true);
 
                         // Set time validity for 5 minutes (300000 ms)
-                        UserSession.setTimeValidity(true);  // Code is valid for now
+                        UserSession.setTimeValidity(true);
 
-                        // Start Timer to expire the code after 5 minutes
+
                         startTimer();
 
                         // Send the code via email
@@ -95,23 +95,22 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    // Generate a random 6-digit verification code
+
     private String generateVerificationCode() {
         Random random = new Random();
         int code = 100000 + random.nextInt(900000); // Generate a random number between 100000 and 999999
         return String.valueOf(code);
     }
 
-    // Timer to handle code expiration after 5 minutes
+
     private void startTimer() {
         // 5 minutes = 300,000 milliseconds
         new android.os.Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                // Code has expired
                 UserSession.setTimeValidity(false);
                 Toast.makeText(LoginActivity.this, "The verification code has expired.", Toast.LENGTH_SHORT).show();
             }
-        }, 300000); // 5 minutes = 300,000 ms
+        }, 300000);
     }
 }

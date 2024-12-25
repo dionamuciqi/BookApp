@@ -39,7 +39,6 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
 
     @Override
     public void onBindViewHolder(@NonNull CustomAdapter.MyViewHolder holder, int position) {
-        // Using holder.getAdapterPosition() inside the click listener
         holder.book_id_txt.setText(book_id.get(position));
         holder.book_title_txt.setText(book_title.get(position));
         holder.book_author_txt.setText(book_author.get(position));
@@ -48,9 +47,8 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
         holder.homeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int pos = holder.getAdapterPosition(); // Get the current adapter position
-                if (pos != RecyclerView.NO_POSITION) { // Ensure that the position is valid
-                    // Create an intent to update the book details
+                int pos = holder.getAdapterPosition();
+                if (pos != RecyclerView.NO_POSITION) {
                     Intent intent = new Intent(context, UpdateActivity.class);
                     intent.putExtra("id", book_id.get(pos));
                     intent.putExtra("title", book_title.get(pos));

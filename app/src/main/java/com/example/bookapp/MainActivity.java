@@ -29,12 +29,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // Handle Skip Button click, start a screen without login (like Home screen)
+        // Handle Skip Button click, start a screen without login
         binding.skipBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Navigate to the Home screen or Dashboard
-                Intent intent = new Intent(MainActivity.this, HomeActivity.class); // Replace HomeActivity with your main screen if needed
+                Intent intent = new Intent(MainActivity.this, HomeActivity.class);
                 startActivity(intent);
             }
         });

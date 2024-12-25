@@ -57,7 +57,6 @@ public class UpdateActivity extends AppCompatActivity {
     void getAndSetIntentData(){
         if(getIntent().hasExtra("id") && getIntent().hasExtra("title") &&
                 getIntent().hasExtra("author") && getIntent().hasExtra("pages")){
-            //Getting Data from Intent
             id = getIntent().getStringExtra("id");
             title = getIntent().getStringExtra("title");
             author = getIntent().getStringExtra("author");
