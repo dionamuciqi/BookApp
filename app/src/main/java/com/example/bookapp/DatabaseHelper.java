@@ -5,13 +5,10 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
-
-    private Context context;
 
     // Database version and name
     private static final int DATABASE_VERSION = 2;
@@ -66,60 +63,50 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         cv.put(COLUMN_AUTHOR, author);
         cv.put(COLUMN_PAGES, pages);
 
-        long result = db.insert(TABLE_NAME, null, cv);
+        db.insert(TABLE_NAME, null, cv);
         db.close();
-
-        if (result == -1) {
-            throw new RuntimeException("Failed to add book");
-        }
-
     }
-    Cursor readAllData(){
-        String query = "SELECT * FROM "  + TABLE_NAME;
+
+    public Cursor readAllData() {
+        String query = "SELECT * FROM " + TABLE_NAME;
         SQLiteDatabase db = this.getReadableDatabase();
 
         Cursor cursor = null;
-        if(db !=  null){
+        if (db != null) {
             cursor = db.rawQuery(query, null);
         }
-        return  cursor;
+        return cursor;
     }
-    void updateData(String row_id, String title, String author, String pages){
+
+    public void updateData(String row_id, String title, String author, String pages) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
         cv.put(COLUMN_TITLE, title);
         cv.put(COLUMN_AUTHOR, author);
         cv.put(COLUMN_PAGES, pages);
 
-        long result = db.update(TABLE_NAME, cv, "_id=?", new String[]{row_id});
-        if(result == -1){
-            Toast.makeText(context, "Failed", Toast.LENGTH_SHORT).show();
-        }else {
-            Toast.makeText(context, "Updated Successfully!", Toast.LENGTH_SHORT).show();
-        }
-
+        db.update(TABLE_NAME, cv, "_id=?", new String[]{row_id});
+        db.close();
     }
-    void deleteOneRow(String row_id){
+
+    public void deleteOneRow(String row_id) {
         SQLiteDatabase db = this.getWritableDatabase();
-        long result = db.delete(TABLE_NAME, "_id=?", new String[]{row_id});
-        if(result == -1){
-            Toast.makeText(context, "Failed to Delete.", Toast.LENGTH_SHORT).show();
-        }else{
-            Toast.makeText(context, "Successfully Deleted.", Toast.LENGTH_SHORT).show();
-        }
+        db.delete(TABLE_NAME, "_id=?", new String[]{row_id});
+        db.close();
     }
 
-    void deleteAllData(){
+    public void deleteAllData() {
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL("DELETE FROM " + TABLE_NAME);
+        db.close();
     }
 
-    // Insert new user data (Make sure this method exists in your DatabaseHelper)
-    public boolean insertData(String email, String password) { // Insert data into the user table
+    // Insert new user data
+    public boolean insertData(String email, String password) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(COLUMN_EMAIL, email);
-        contentValues.put(COLUMN_PASSWORD, password);
+        contentValues.put(COLUMN_PASSWORD, PasswordHasher.generateHash(password)); // Hash the password
 
         long result = db.insert(USER_TABLE_NAME, null, contentValues);
         db.close();
@@ -139,20 +126,22 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     // Check if email and password match
     public boolean checkEmailPassword(String email, String password) {
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM " + USER_TABLE_NAME + " WHERE email = ? AND password = ?", new String[]{email, password});
+        String hashedPassword = PasswordHasher.generateHash(password); // Hash the input password
+        Cursor cursor = db.rawQuery("SELECT * FROM " + USER_TABLE_NAME + " WHERE email = ? AND password = ?", new String[]{email, hashedPassword});
         boolean isValid = cursor.getCount() > 0;
         cursor.close();
         db.close();
         return isValid;
     }
 
+    // Update user password
     public boolean updatePassword(String email, String newPassword) {
         SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues contentValues= new ContentValues();
-        contentValues.put(COLUMN_PASSWORD, newPassword);
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(COLUMN_PASSWORD, PasswordHasher.generateHash(newPassword)); // Hash the new password
 
-        int result = db.update(TABLE_NAME, contentValues, COLUMN_EMAIL + "= ?" , new String[]{email});
+        int result = db.update(USER_TABLE_NAME, contentValues, COLUMN_EMAIL + " = ?", new String[]{email});
         db.close();
-        return  result > 0;
+        return result > 0;
     }
 }

@@ -14,8 +14,6 @@ public class LoginActivity extends AppCompatActivity {
     ActivityLoginBinding binding;
     DatabaseHelper databaseHelper;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,8 +37,11 @@ public class LoginActivity extends AppCompatActivity {
                 } else if (password.length() < 6) {
                     Toast.makeText(LoginActivity.this, "Password must be at least 6 characters long", Toast.LENGTH_SHORT).show();
                 } else {
+                    // Hash the password using PasswordHasher
+                    String hashedPassword = PasswordHasher.generateHash(password);
+
                     // Check Credentials
-                    Boolean checkCredentials = databaseHelper.checkEmailPassword(email, password);
+                    Boolean checkCredentials = databaseHelper.checkEmailPassword(email, hashedPassword);
 
                     if (checkCredentials) {
                         Toast.makeText(LoginActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
