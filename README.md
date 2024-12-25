@@ -1,6 +1,6 @@
 ## BookApp - Android Application
 
-# *BookApp* is a modern Android application designed to manage books. It helps users organize, add, update, and search for books easily through a simple and intuitive interface.
+ *BookApp* is a modern Android application designed to manage books. It helps users organize, add, update, and search for books easily through a simple and intuitive interface.
 
 ## Key Features
 - *Add new books*: Record details such as title, author, genre, and publication date.
