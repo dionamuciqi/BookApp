@@ -10,11 +10,24 @@
 
 ## Technologies Used
 - **Java**: The main programming language for the project.
-- **JavaFX**: For building the graphical user interface (GUI).
-- **FXML**: To define the UI layout and structure.
 - **SQLite**: A lightweight relational database for storing book data.
+
+## Usage
+   - Start the application by running Main.java.
+   - Use the app to add, edit, view, and delete books.
+   - Browse and search for books in your collection.
 
 ## Installation Instructions
 1. Clone this repository:
    ```bash
    git clone https://github.com/dionamuciqi/BookApp.git
+
+# Contributors
+
+• Anila Luta
+
+• Albiona Mustafa
+
+• Diona Muciqi
+
+• Vjosa Salihu
