@@ -17,29 +17,28 @@ import java.util.ArrayList;
 public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHolder> {
 
     private Context context;
-    Activity activity;
+    private Activity activity;
     private ArrayList<String> book_id, book_title, book_author, book_pages;
 
-    CustomAdapter(Activity activity, Context context, ArrayList<String> book_id, ArrayList<String> book_title, ArrayList<String> book_author, ArrayList<String> book_pages) {
+    public CustomAdapter(Activity activity, Context context, ArrayList<String> book_id, ArrayList<String> book_title, ArrayList<String> book_author, ArrayList<String> book_pages) {
         this.activity = activity;
         this.context = context;
-        this.book_title = book_title;
         this.book_id = book_id;
+        this.book_title = book_title;
         this.book_author = book_author;
         this.book_pages = book_pages;
     }
 
     @NonNull
     @Override
-    public CustomAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.my_row, parent, false);
         return new MyViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull CustomAdapter.MyViewHolder holder, int position) {
-        // Using holder.getAdapterPosition() inside the click listener
+    public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         holder.book_id_txt.setText(book_id.get(position));
         holder.book_title_txt.setText(book_title.get(position));
         holder.book_author_txt.setText(book_author.get(position));
@@ -48,15 +47,14 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
         holder.homeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int pos = holder.getAdapterPosition(); // Get the current adapter position
-                if (pos != RecyclerView.NO_POSITION) { // Ensure that the position is valid
-                    // Create an intent to update the book details
+                int pos = holder.getAdapterPosition();
+                if (pos != RecyclerView.NO_POSITION) {
                     Intent intent = new Intent(context, UpdateActivity.class);
                     intent.putExtra("id", book_id.get(pos));
                     intent.putExtra("title", book_title.get(pos));
                     intent.putExtra("author", book_author.get(pos));
                     intent.putExtra("pages", book_pages.get(pos));
-
+                    context.startActivity(intent); // Start UpdateActivity
                 }
             }
         });
@@ -68,7 +66,6 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-
         TextView book_id_txt, book_title_txt, book_author_txt, book_pages_txt;
         LinearLayout homeLayout;
 

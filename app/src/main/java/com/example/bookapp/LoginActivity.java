@@ -1,7 +1,9 @@
 package com.example.bookapp;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Toast;
@@ -13,8 +15,8 @@ import com.example.bookapp.databinding.ActivityLoginBinding;
 import java.util.Random;
 
 public class LoginActivity extends AppCompatActivity {
-    ActivityLoginBinding binding;
-    DatabaseHelper databaseHelper;
+    private ActivityLoginBinding binding;
+    private DatabaseHelper databaseHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,56 +30,56 @@ public class LoginActivity extends AppCompatActivity {
         UserSession.init(this);
 
         // Handle Login Button Click
-        binding.loginBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String email = binding.loginEmail.getText().toString().trim();
-                String password = binding.loginPassword.getText().toString();
+        binding.loginBtn.setOnClickListener(view -> {
+            String email = binding.loginEmail.getText().toString().trim();
+            String password = binding.loginPassword.getText().toString();
 
-                // Validation
-                if (email.isEmpty() || password.isEmpty()) {
-                    Toast.makeText(LoginActivity.this, "All fields are mandatory", Toast.LENGTH_SHORT).show();
-                } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-                    Toast.makeText(LoginActivity.this, "Please enter a valid email address", Toast.LENGTH_SHORT).show();
-                } else if (password.length() < 6) {
-                    Toast.makeText(LoginActivity.this, "Password must be at least 6 characters long", Toast.LENGTH_SHORT).show();
+            // Validation
+            if (email.isEmpty() || password.isEmpty()) {
+                Toast.makeText(LoginActivity.this, "All fields are mandatory", Toast.LENGTH_SHORT).show();
+            } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                Toast.makeText(LoginActivity.this, "Please enter a valid email address", Toast.LENGTH_SHORT).show();
+            } else if (password.length() < 6) {
+                Toast.makeText(LoginActivity.this, "Password must be at least 6 characters long", Toast.LENGTH_SHORT).show();
+            } else {
+                // Check Credentials
+                boolean checkCredentials = databaseHelper.checkEmailPassword(email, password);
+
+                if (checkCredentials) {
+                    // Login Successful
+                    Toast.makeText(LoginActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
+
+                    ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this);
+                    progressDialog.setMessage("Sending verification code...");
+                    progressDialog.setCancelable(false);
+                    progressDialog.show();
+
+                    String verificationCode = generateVerificationCode();
+                    UserSession.storeGeneratedCode(verificationCode);
+                    UserSession.setEmail(email);
+                    UserSession.setCodeValidity(true);
+                    UserSession.setTimeValidity(true);
+                    startTimer();
+
+                    // Simulate email sending
+                    new Thread(() -> {
+                        try {
+                            EmailActivity2FA.sendVerificationCode(email, verificationCode, "Verification Code", "Use this code to complete your login:");
+                            runOnUiThread(() -> {
+                                progressDialog.dismiss();
+                                Intent intent = new Intent(LoginActivity.this, CodeVerificationPage.class);
+                                startActivity(intent);
+                                finish();
+                            });
+                        } catch (Exception e) {
+                            runOnUiThread(() -> {
+                                progressDialog.dismiss();
+                                Toast.makeText(LoginActivity.this, "Failed to send email.", Toast.LENGTH_SHORT).show();
+                            });
+                        }
+                    }).start();
                 } else {
-                    // Check Credentials
-                    Boolean checkCredentials = databaseHelper.checkEmailPassword(email, password);
-
-                    if (checkCredentials) {
-                        // Login Successful
-                        Toast.makeText(LoginActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
-
-                        // Generate a 6-digit verification code
-                        String verificationCode = generateVerificationCode();
-
-                        // Store the code and email in UserSession
-                        UserSession.storeGeneratedCode(verificationCode);
-                        UserSession.setEmail(email);
-                        UserSession.setCodeValidity(true);  // Set code as valid
-
-                        // Set time validity for 5 minutes (300000 ms)
-                        UserSession.setTimeValidity(true);  // Code is valid for now
-
-                        // Start Timer to expire the code after 5 minutes
-                        startTimer();
-
-                        // Send the code via email
-                        EmailActivity2FA.sendVerificationCode(
-                                email,
-                                verificationCode,
-                                "Your Book App Verification Code",
-                                "Use this code to complete your login:"
-                        );
-
-                        // Redirect to 2FA Verification Activity
-                        Intent intent = new Intent(LoginActivity.this, CodeVerificationPage.class);
-                        startActivity(intent);
-                        finish();
-                    } else {
-                        Toast.makeText(LoginActivity.this, "Invalid email or password", Toast.LENGTH_SHORT).show();
-                    }
+                    Toast.makeText(LoginActivity.this, "Invalid email or password", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -98,20 +100,14 @@ public class LoginActivity extends AppCompatActivity {
     // Generate a random 6-digit verification code
     private String generateVerificationCode() {
         Random random = new Random();
-        int code = 100000 + random.nextInt(900000); // Generate a random number between 100000 and 999999
-        return String.valueOf(code);
+        return String.valueOf(100000 + random.nextInt(900000)); // Random number between 100000 and 999999
     }
 
     // Timer to handle code expiration after 5 minutes
     private void startTimer() {
-        // 5 minutes = 300,000 milliseconds
-        new android.os.Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                // Code has expired
-                UserSession.setTimeValidity(false);
-                Toast.makeText(LoginActivity.this, "The verification code has expired.", Toast.LENGTH_SHORT).show();
-            }
+        new Handler().postDelayed(() -> {
+            UserSession.setTimeValidity(false);
+            Toast.makeText(LoginActivity.this, "The verification code has expired.", Toast.LENGTH_SHORT).show();
         }, 300000); // 5 minutes = 300,000 ms
     }
 }
