@@ -1,5 +1,7 @@
 package com.example.bookapp;
 
+import android.app.Activity;
+import android.os.Bundle;
 import android.util.Log;
 
 import javax.mail.*;
@@ -8,7 +10,7 @@ import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class EmailActivity2FA {
+public class EmailActivity2FA extends Activity { // Extending Activity
     private static final String USERNAME = "diona.muqiqi3@gmail.com"; // Sender's email
     private static final String PASSWORD = ""; // app password
     private static final String SMTP_SERVER = "smtp.gmail.com";
