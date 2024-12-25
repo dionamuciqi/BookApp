@@ -51,5 +51,8 @@ dependencies {
     testImplementation(libs.junit) // JUnit for unit testing
     androidTestImplementation(libs.ext.junit) // Android-specific JUnit tests
     androidTestImplementation(libs.espresso.core) // Espresso for UI testing
-}
 
+    implementation("com.sun.mail:android-mail:1.6.5") // JavaMail API for sending emails
+    implementation("com.sun.mail:android-activation:1.6.5") // JavaMail Activation for email functionality
+    implementation ("org.mindrot:jbcrypt:0.4")
+}

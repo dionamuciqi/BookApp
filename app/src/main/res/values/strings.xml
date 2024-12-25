@@ -4,5 +4,7 @@
     <string name="add_new_item">Add New Item</string>
     <string name="add_book_label">Add Book</string>
     <string name="book_library_label">Book Library</string>
+    <string name="logo_desc">App logo</string>
+
 
 </resources>

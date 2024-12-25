@@ -5,6 +5,8 @@
     <!-- All required permissions -->
     <uses-permission android:name="android.permission.INTERNET" />
 
+
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -15,18 +17,23 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MaterialComponents.Light.NoActionBar"
         tools:targetApi="31">
-        <activity android:name=".UpdateActivity"
-            android:parentActivityName=".HomeActivity"/>
+        <activity
+            android:name=".CodeVerificationPage"
+            android:exported="false" />
+        <activity
+            android:name=".EmailActivity2FA"
+            android:exported="false" />
+        <activity
+            android:name=".UpdateActivity"
+            android:parentActivityName=".HomeActivity" />
         <activity
             android:name=".AddActivity"
             android:label="Add Book"
             android:parentActivityName=".HomeActivity" />
-
         <activity
             android:name=".HomeActivity"
             android:exported="false"
             android:label="@string/book_library_label" /> <!-- Add Activity -->
-
         <activity
             android:name=".SignupActivity"
             android:exported="false" />

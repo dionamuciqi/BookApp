@@ -10,6 +10,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.bookapp.databinding.ActivityLoginBinding;
 
+import java.util.Random;
+
 public class LoginActivity extends AppCompatActivity {
     ActivityLoginBinding binding;
     DatabaseHelper databaseHelper;
@@ -21,6 +23,9 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         databaseHelper = new DatabaseHelper(this);
+
+        // Initialize UserSession
+        UserSession.init(this);
 
         // Handle Login Button Click
         binding.loginBtn.setOnClickListener(new View.OnClickListener() {
@@ -37,16 +42,39 @@ public class LoginActivity extends AppCompatActivity {
                 } else if (password.length() < 6) {
                     Toast.makeText(LoginActivity.this, "Password must be at least 6 characters long", Toast.LENGTH_SHORT).show();
                 } else {
-                    // Hash the password using PasswordHasher
-                    String hashedPassword = PasswordHasher.generateHash(password);
-
                     // Check Credentials
-                    Boolean checkCredentials = databaseHelper.checkEmailPassword(email, hashedPassword);
+                    Boolean checkCredentials = databaseHelper.checkEmailPassword(email, password);
 
                     if (checkCredentials) {
+                        // Login Successful
                         Toast.makeText(LoginActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+
+                        // Generate a 6-digit verification code
+                        String verificationCode = generateVerificationCode();
+
+                        // Store the code and email in UserSession
+                        UserSession.storeGeneratedCode(verificationCode);
+                        UserSession.setEmail(email);
+                        UserSession.setCodeValidity(true);  // Set code as valid
+
+                        // Set time validity for 5 minutes (300000 ms)
+                        UserSession.setTimeValidity(true);  // Code is valid for now
+
+                        // Start Timer to expire the code after 5 minutes
+                        startTimer();
+
+                        // Send the code via email
+                        EmailActivity2FA.sendVerificationCode(
+                                email,
+                                verificationCode,
+                                "Your Book App Verification Code",
+                                "Use this code to complete your login:"
+                        );
+
+                        // Redirect to 2FA Verification Activity
+                        Intent intent = new Intent(LoginActivity.this, CodeVerificationPage.class);
                         startActivity(intent);
+                        finish();
                     } else {
                         Toast.makeText(LoginActivity.this, "Invalid email or password", Toast.LENGTH_SHORT).show();
                     }
@@ -55,20 +83,35 @@ public class LoginActivity extends AppCompatActivity {
         });
 
         // Redirect to Sign Up Activity
-        binding.noAccountTv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(LoginActivity.this, SignupActivity.class);
-                startActivity(intent);
-            }
+        binding.noAccountTv.setOnClickListener(view -> {
+            Intent intent = new Intent(LoginActivity.this, SignupActivity.class);
+            startActivity(intent);
         });
 
-        binding.forgotTv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(LoginActivity.this, ForgotPasswordActivity.class);
-                startActivity(intent);
-            }
+        // Redirect to Forgot Password Activity
+        binding.forgotTv.setOnClickListener(view -> {
+            Intent intent = new Intent(LoginActivity.this, ForgotPasswordActivity.class);
+            startActivity(intent);
         });
+    }
+
+    // Generate a random 6-digit verification code
+    private String generateVerificationCode() {
+        Random random = new Random();
+        int code = 100000 + random.nextInt(900000); // Generate a random number between 100000 and 999999
+        return String.valueOf(code);
+    }
+
+    // Timer to handle code expiration after 5 minutes
+    private void startTimer() {
+        // 5 minutes = 300,000 milliseconds
+        new android.os.Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                // Code has expired
+                UserSession.setTimeValidity(false);
+                Toast.makeText(LoginActivity.this, "The verification code has expired.", Toast.LENGTH_SHORT).show();
+            }
+        }, 300000); // 5 minutes = 300,000 ms
     }
 }

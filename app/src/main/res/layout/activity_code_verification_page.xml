@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:gravity="center"
+    tools:context=".CodeVerificationPage">
+
+    <!-- Image Logo -->
+    <ImageView
+        android:id="@+id/logoImageView"
+        android:layout_width="268dp"
+        android:layout_height="231dp"
+        android:layout_gravity="center"
+        android:layout_marginBottom="24dp"
+        android:src="@drawable/logo" />
+
+    <!-- EditText for verification code -->
+    <EditText
+        android:id="@+id/editTextCode"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="16dp"
+    android:hint="Enter Verification Code"
+    android:inputType="number"
+    android:padding="16dp"
+    android:layout_marginTop="24dp"
+    android:minHeight="48dp" />
+
+    <!-- Verify Button -->
+    <Button
+        android:id="@+id/btnVerify"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="Verify"
+    android:layout_marginTop="16dp"
+    android:padding="16dp"
+    android:minHeight="48dp" />
+
+    <!-- Resend Code Button -->
+    <Button
+        android:id="@+id/btnResendCode"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginLeft="7dp"
+        android:layout_marginRight="7dp"
+        android:text="Resend code" />
+
+    <!-- Go to Log In Button -->
+    <Button
+        android:id="@+id/btnGoToLogIn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginLeft="7dp"
+        android:layout_marginRight="7dp"
+        android:text="Go to Log In" />
+
+</LinearLayout>
